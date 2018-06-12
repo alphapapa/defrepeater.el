@@ -1,0 +1,60 @@
+#+PROPERTY: LOGGING nil
+
+#+BEGIN_HTML
+<a href=https://alphapapa.github.io/dont-tread-on-emacs/><img src="dont-tread-on-emacs-150.png" align="right"></a>
+#+END_HTML
+
+* defrepeater.el
+
+[[https://melpa.org/#/helm-org-rifle][file:https://melpa.org/packages/defrepeater-badge.svg]] [[https://stable.melpa.org/#/helm-org-rifle][file:https://stable.melpa.org/packages/defrepeater-badge.svg]]
+
+This package lets you easily define "repeating commands," which are commands that can be repeated by repeatedly pressing the last key of the sequence bound to it.
+
+For example, let's say that you use ~winner-mode~, and you have ~C-c C-w p~ bound to =winner-undo=.  Obviously, pressing that whole sequence repeatedly is tiresome when you want to go several steps back.  But using this macro, you can press ~C-c C-w p~ once, and then just press ~p~ to keep repeating =winner-undo=, until you press a different key (you could press ~C-g~ if you needed to stop the repetition so you could press ~p~ normally).
+
+You use it like this:
+
+#+BEGIN_SRC elisp
+  (defrepeater winner-undo-repeat #'winner-undo)
+#+END_SRC
+
+Then you can bind your keys like this (example using =general=):
+
+#+BEGIN_SRC elisp
+  (general-def
+    [remap winner-undo] #'winner-undo-repeat)
+#+END_SRC
+
+For example, I had ~M-SPC w p~ bound to =winner-undo=, so now I can press ~M-SPC w p p p~ to call =winner-undo= 3 times.
+
+* Installation
+
+** MELPA
+
+If you installed from MELPA, you're done.  Just run one of the commands below.
+
+** Manual
+
+Put this file in your ~load-path~, and put this in your init file:
+
+#+BEGIN_SRC elisp
+  (require 'defrepeater)
+#+END_SRC
+
+* Changelog
+
+** 1.0
+
+Initial release.
+
+* Credits
+
+This was inspired by [[https://emacs.stackexchange.com/a/13102][this answer]] by Drew Adams.
+
+* Development
+
+Bug reports, feature requests, suggestions — /oh my/!
+
+* License
+
+GPLv3
