@@ -4,7 +4,7 @@
 
 ;; Author: Adam Porter <adam@alphapapa.net>
 ;; URL: http://github.com/alphapapa/defrepeater.el
-;; Version: 0.1-pre
+;; Version: 1.0-pre
 ;; Package-Requires: ((emacs "25.2"))
 ;; Keywords: convenience
 
@@ -21,12 +21,17 @@
 
 ;; You use it like this:
 
-;;     (defrepeater winner-undo-repeat #'winner-undo)
+;;    ;; Automatically defines `winner-redo-repeat' command:
+;;    (defrepeater #'winner-redo)
 
-;; Then you can bind your keys like this (example using `general'):
+;;    ;; Optionally specify the name of the repeater, like using `defalias':
+;;    (defrepeater 'winner-undo-repeat #'winner-undo)
 
-;;     (general-def
-;;       [remap winner-undo] #'winner-undo-repeat)
+;;  Then you can bind your keys like this (example using `general'):
+
+;; (general-def
+;;   [remap winner-redo] #'winner-redo-repeat
+;;   [remap winner-undo] #'winner-undo-repeat)
 
 ;; For example, I had "M-SPC w p" bound to `winner-undo', so now I can press "M-SPC w p p p" to call
 ;; `winner-undo' 3 times.
@@ -50,6 +55,7 @@
 ;;;; Credits
 
 ;; This was inspired by this answer by Drew Adams: <https://emacs.stackexchange.com/a/13102>
+;; Thanks also to Fox Keister <https://github.com/noctuid> for his feedback.
 
 ;;; License:
 
@@ -75,19 +81,32 @@
 ;;;; Functions
 
 ;;;###autoload
-(defmacro defrepeater (name command)
-  "Define NAME as an interactive command which calls COMMAND repeatedly.
-    COMMAND is called every time the last key of the sequence bound
-    to NAME is pressed, until another key is pressed."
+(defmacro defrepeater (name-or-command &optional command)
+  "Define NAME-OR-COMMAND as an interactive command which calls COMMAND repeatedly.
+COMMAND is called every time the last key of the sequence bound
+to NAME is pressed, until another key is pressed. If COMMAND is
+given, the repeating command is named NAME-OR-COMMAND and calls
+COMMAND; otherwise it is named `NAME-OR-COMMAND-repeat' and calls
+NAME-OR-COMMAND."
   (let* ((docstring (format "Repeatedly call `%s'. You may repeatedly press the last key of
     the sequence bound to this command to repeatedly call `%s'."
                             (cadr command)
-                            (cadr command))))
-    `(defun ,name () ,docstring
-            (interactive)
-            (let ((repeat-message-function #'ignore))
-              (setq last-repeatable-command ,command)
-              (repeat nil)))))
+                            (cadr command)))
+         (name (if command
+                   ;; `defalias' style
+                   (cadr name-or-command)
+                 ;; Automatic repeater function name
+                 (make-symbol (concat (symbol-name (cadr name-or-command)) "-repeat"))))
+         (command (or command
+                      name-or-command)))
+    `(progn
+       (when (fboundp ',name)
+         (user-error "Function is already defined: %s" ',name))
+       (defun ,name () ,docstring
+              (interactive)
+              (let ((repeat-message-function #'ignore))
+                (setq last-repeatable-command ,command)
+                (repeat nil))))))
 
 ;;;; Footer
 

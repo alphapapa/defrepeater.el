@@ -15,13 +15,18 @@ For example, let's say that you use ~winner-mode~, and you have ~C-c C-w p~ boun
 You use it like this:
 
 #+BEGIN_SRC elisp
-  (defrepeater winner-undo-repeat #'winner-undo)
+  ;; Automatically defines `winner-redo-repeat' command:
+  (defrepeater #'winner-redo)
+
+  ;; Optionally specify the name of the repeater, like using `defalias':
+  (defrepeater 'winner-undo-repeat #'winner-undo)
 #+END_SRC
 
 Then you can bind your keys like this (example using =general=):
 
 #+BEGIN_SRC elisp
   (general-def
+    [remap winner-redo] #'winner-redo-repeat
     [remap winner-undo] #'winner-undo-repeat)
 #+END_SRC
 
