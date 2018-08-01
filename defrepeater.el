@@ -90,17 +90,16 @@ to NAME is pressed, until another key is pressed. If COMMAND is
 given, the repeating command is named NAME-OR-COMMAND and calls
 COMMAND; otherwise it is named `NAME-OR-COMMAND-repeat' and calls
 NAME-OR-COMMAND."
-  (let* ((docstring (format "Repeatedly call `%s'. You may repeatedly press the last key of
-    the sequence bound to this command to repeatedly call `%s'."
-                            (cadr command)
-                            (cadr command)))
-         (name (if command
+  (let* ((name (if command
                    ;; `defalias' style
                    (cadr name-or-command)
                  ;; Automatic repeater function name
                  (make-symbol (concat (symbol-name (cadr name-or-command)) "-repeat"))))
          (command (or command
-                      name-or-command)))
+                      name-or-command))
+         (docstring (format "Repeatedly call `%s'. You may repeatedly press the last key of the sequence bound to this command to repeatedly call `%s'."
+                            (cadr command)
+                            (cadr command))))
     `(progn
        (when (fboundp ',name)
          (user-error "Function is already defined: %s" ',name))
