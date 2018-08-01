@@ -10,14 +10,16 @@
 
 ;;; Commentary:
 
-;; This package lets you easily define "repeating commands," which are commands that can be repeated
-;; by repeatedly pressing the last key of the sequence bound to it.
+;; This package lets you easily define "repeating commands," which are commands
+;; that can be repeated by repeatedly pressing the last key of the sequence
+;; bound to it.
 
-;; For example, let's say that you use "winner-mode", and you have "C-c C-w p" bound to
-;; `winner-undo'.  Obviously, pressing that whole sequence repeatedly is tiresome when you want to
-;; go several steps back.  But using this macro, you can press "C-c C-w p" once, and then just press
-;; "p" to keep repeating `winner-undo', until you press a different key (you could press "C-g" if
-;; you needed to stop the repetition so you could press "p" normally).
+;; For example, let's say that you use "winner-mode", and you have "C-c C-w p"
+;; bound to `winner-undo'.  Obviously, pressing that whole sequence repeatedly
+;; is tiresome when you want to go several steps back.  But using this macro,
+;; you can press "C-c C-w p" once, and then just press "p" to keep repeating
+;; `winner-undo', until you press a different key (you could press "C-g" if you
+;; needed to stop the repetition so you could press "p" normally).
 
 ;; You use it like this:
 
@@ -33,8 +35,8 @@
 ;;   [remap winner-redo] #'winner-redo-repeat
 ;;   [remap winner-undo] #'winner-undo-repeat)
 
-;; For example, I had "M-SPC w p" bound to `winner-undo', so now I can press "M-SPC w p p p" to call
-;; `winner-undo' 3 times.
+;; For example, I had "M-SPC w p" bound to `winner-undo', so now I can press
+;; "M-SPC w p p p" to call `winner-undo' 3 times.
 
 ;;;; Installation
 
