@@ -94,7 +94,7 @@ NAME-OR-COMMAND."
                    ;; `defalias' style
                    (cadr name-or-command)
                  ;; Automatic repeater function name
-                 (make-symbol (concat (symbol-name (cadr name-or-command)) "-repeat"))))
+                 (intern (concat (symbol-name (cadr name-or-command)) "-repeat"))))
          (command (or command
                       name-or-command))
          (docstring (format "Repeatedly call `%s'. You may repeatedly press the last key of the sequence bound to this command to repeatedly call `%s'."
