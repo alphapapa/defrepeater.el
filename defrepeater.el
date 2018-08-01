@@ -5,7 +5,7 @@
 ;; Author: Adam Porter <adam@alphapapa.net>
 ;; URL: http://github.com/alphapapa/defrepeater.el
 ;; Version: 1.0-pre
-;; Package-Requires: ((emacs "25.2"))
+;; Package-Requires: ((emacs "25.2") (s "1.12.0"))
 ;; Keywords: convenience
 
 ;;; Commentary:
@@ -80,6 +80,8 @@
 
 (require 'repeat)
 
+(require 's)
+
 ;;;; Functions
 
 ;;;###autoload
@@ -97,9 +99,10 @@ NAME-OR-COMMAND."
                  (intern (concat (symbol-name (cadr name-or-command)) "-repeat"))))
          (command (or command
                       name-or-command))
-         (docstring (format "Repeatedly call `%s'. You may repeatedly press the last key of the sequence bound to this command to repeatedly call `%s'."
-                            (cadr command)
-                            (cadr command))))
+         (docstring (concat (format "Repeatedly call `%s'." (cadr command))
+                            "\n\n"
+                            (s-word-wrap 80 (format "You may repeatedly press the last key of the sequence bound to this command to repeatedly call `%s'."
+                                                    (cadr command))))))
     `(progn
        (when (fboundp ',name)
          (user-error "Function is already defined: %s" ',name))
