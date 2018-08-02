@@ -14,7 +14,7 @@ For example, let's say that you use ~winner-mode~, and you have ~C-c C-w p~ boun
 
 ** Usage
 
-Define repeating versions of commands like this:
+First, define repeating commands:
 
 #+BEGIN_SRC elisp
   ;; Automatically defines `winner-redo-repeat' command:
@@ -24,7 +24,7 @@ Define repeating versions of commands like this:
   (defrepeater 'winner-undo-repeat #'winner-undo)
 #+END_SRC
 
-Then you can bind your keys like this (example using [[https://github.com/noctuid/general.el][general]]):
+Then bind keys to the new commands (example using [[https://github.com/noctuid/general.el][general]]):
 
 #+BEGIN_SRC elisp
   (general-def
@@ -32,9 +32,9 @@ Then you can bind your keys like this (example using [[https://github.com/noctui
     [remap winner-undo] #'winner-undo-repeat)
 #+END_SRC
 
-For example, I had ~M-SPC w p~ bound to =winner-undo=, so now I can press ~M-SPC w p p p~ to call =winner-undo= 3 times.
+For example, @@html:<kbd>@@M-SPC w p@@html:</kbd>@@ was bound to =winner-undo=, so now @@html:<kbd>@@M-SPC w p p p@@html:</kbd>@@ can be pressed to call =winner-undo= 3 times.
 
-You can also use ~defrepeater~ in a key-binding expression, like:
+=defrepeater= can also be used directly in a key-binding expression:
 
 #+BEGIN_SRC elisp
   (global-set-key (kbd "C-x o") (defrepeater #'other-window))
