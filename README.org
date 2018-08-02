@@ -34,6 +34,12 @@ Then you can bind your keys like this (example using [[https://github.com/noctui
 
 For example, I had ~M-SPC w p~ bound to =winner-undo=, so now I can press ~M-SPC w p p p~ to call =winner-undo= 3 times.
 
+You can also use ~defrepeater~ in a key-binding expression, like:
+
+#+BEGIN_SRC elisp
+  (global-set-key (kbd "C-x o") (defrepeater #'other-window))
+#+END_SRC
+
 ** Installation
 
 *** MELPA

@@ -91,7 +91,10 @@ COMMAND is called every time the last key of the sequence bound
 to NAME is pressed, until another key is pressed. If COMMAND is
 given, the repeating command is named NAME-OR-COMMAND and calls
 COMMAND; otherwise it is named `NAME-OR-COMMAND-repeat' and calls
-NAME-OR-COMMAND."
+NAME-OR-COMMAND.
+
+The newly defined function's symbol is returned, so
+e.g. `defrepeater' may be used in a key-binding expression."
   (let* ((name (if command
                    ;; `defalias' style
                    (cadr name-or-command)
@@ -105,12 +108,13 @@ NAME-OR-COMMAND."
                                                     (cadr command))))))
     `(progn
        (when (fboundp ',name)
-         (user-error "Function is already defined: %s" ',name))
+         (warn "Function is already defined: %s" ',name))
        (defun ,name () ,docstring
               (interactive)
               (let ((repeat-message-function #'ignore))
                 (setq last-repeatable-command ,command)
-                (repeat nil))))))
+                (repeat nil)))
+       ',name)))
 
 ;;;; Footer
 
