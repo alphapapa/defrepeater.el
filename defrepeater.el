@@ -104,8 +104,7 @@ e.g. `defrepeater' may be used in a key-binding expression."
                    (cadr name-or-command)
                  ;; Automatic repeater function name
                  (intern (concat (symbol-name (cadr name-or-command)) "-repeat"))))
-         (command (or command
-                      name-or-command))
+         (command (or command name-or-command))
          (docstring (concat (format "Repeatedly call `%s'." (cadr command))
                             "\n\n"
                             (s-word-wrap 80 (format "You may repeatedly press the last key of the sequence bound to this command to repeatedly call `%s'."
@@ -113,11 +112,12 @@ e.g. `defrepeater' may be used in a key-binding expression."
     `(progn
        (when (fboundp ',name)
          (warn "Function is already defined: %s" ',name))
-       (defun ,name () ,docstring
-              (interactive)
-              (let ((repeat-message-function #'ignore))
-                (setq last-repeatable-command ,command)
-                (repeat nil)))
+       (defun ,name ()
+         ,docstring
+         (interactive)
+         (let ((repeat-message-function #'ignore))
+           (setq last-repeatable-command ,command)
+           (repeat nil)))
        ',name)))
 
 ;;;; Footer
