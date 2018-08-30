@@ -1,4 +1,4 @@
-;;; defrepeater.el --- Easily make repeatable commands  -*- lexical-binding: t; -*-
+;;; defrepeater.el --- Easily make commands repeatable  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018 Adam Porter
 
