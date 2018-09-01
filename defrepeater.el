@@ -87,6 +87,35 @@
 (require 's)
 
 ;;;; Functions
+;;;###autoload
+(defun defrepeater- (name-or-command &optional command)
+  "Define NAME-OR-COMMAND as an interactive command which calls COMMAND repeatedly.
+COMMAND is called every time the last key of the sequence bound
+to NAME is pressed, until another key is pressed. If COMMAND is
+given, the repeating command is named NAME-OR-COMMAND and calls
+COMMAND; otherwise it is named `NAME-OR-COMMAND-repeat' and calls
+NAME-OR-COMMAND.
+
+The newly defined function's symbol is returned, so
+e.g. `defrepeater' may be used in a key-binding expression."
+  (let* ((name (if command
+                   name-or-command
+                 (intern (format "%s-repeat" name-or-command))))
+         (command (or command name-or-command))
+         (docstring (concat (format "Repeatedly call `%s'." command)
+                            "\n\n"
+                            (s-word-wrap 80 (format "You may repeatedly press \
+the last key of the sequence bound to this command to repeatedly call `%s'."
+                                                    command)))))
+    (when (fboundp name)
+      (warn "Function is already defined: %s" name))
+    (put name 'function-documentation docstring)
+    ;; lexical-binding required for closure
+    (fset name (lambda ()
+                 (interactive)
+                 (let ((repeat-message-function #'ignore))
+                   (setq last-repeatable-command command)
+                   (repeat nil))))))
 
 ;;;###autoload
 (defmacro defrepeater (name-or-command &optional command)
