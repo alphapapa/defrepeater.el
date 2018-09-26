@@ -6,7 +6,7 @@
 
 * defrepeater.el
 
-[[https://melpa.org/#/helm-org-rifle][file:https://melpa.org/packages/defrepeater-badge.svg]] [[https://stable.melpa.org/#/helm-org-rifle][file:https://stable.melpa.org/packages/defrepeater-badge.svg]]
+[[https://melpa.org/#/defrepeater][file:https://melpa.org/packages/defrepeater-badge.svg]]
 
 This package lets you easily define "repeating commands," which are commands that can be repeated by pressing the last key of the sequence bound to it.
 
